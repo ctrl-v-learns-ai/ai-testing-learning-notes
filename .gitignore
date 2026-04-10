@@ -1,0 +1,20 @@
+# ===== 虚拟环境 =====
+venv/
+.venv/
+env/
+ENV/
+
+# ===== PyCharm 配置 =====
+.idea/
+
+# ===== Python 缓存 =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===== 其他常见忽略 =====
+*.egg-info/
+dist/
+build/
+.ipynb_checkpoints/
