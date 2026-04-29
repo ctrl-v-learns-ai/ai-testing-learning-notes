@@ -45,7 +45,7 @@ messages = chat_prompt.format_messages(
 
 print("ChatPromptTemplate 输出：")
 for msg in messages:
-    print(f"  [{msg.type}] {msg.content}")
+    print(f"[{msg.type}] {msg.content}")
 
 # ===== 练习2.3：模板的高级用法 =====
 
@@ -59,12 +59,15 @@ prompt_with_role = ChatPromptTemplate.from_messages([
 messages = prompt_with_role.format_messages(question="如何做性能测试？")
 print("\nPartial 变量输出：")
 for msg in messages:
-    print(f"  [{msg.type}] {msg.content}")
+    print(f"[{msg.type}] {msg.content}")
 
 """
 思考题：
 1. PromptTemplate 和 ChatPromptTemplate 的区别是什么？什么时候用哪个？
+
 2. from_messages 方法中 ("system", "...") 和 ("human", "...") 分别代表什么？
+
 3. partial 方法的作用是什么？什么场景下会用到？
+
 4. 如果模板中有变量但调用时没有提供，会发生什么？
 """
