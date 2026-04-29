@@ -71,3 +71,24 @@ for msg in messages:
 
 4. 如果模板中有变量但调用时没有提供，会发生什么？
 """
+
+"""可以先思考再看答案建议"""
+
+"""
+答案建议：
+1.  PromptTemplate 生成的是一个字符串，给普通 LLM 用。
+    ChatPromptTemplate 生成的是一组带角色的消息列表，给 ChatModel 用。
+
+2.  ("system",    ...)  →  告诉模型"你是谁"
+    ("human",     ...)  →  用户"问了什么"
+    ("assistant", ...)  →  模型"之前说了什么"
+    
+3.  partial = 预填参数
+    哪些变量每次都不变 → 用 partial 提前固定
+    哪些变量每次都不同 → 留给 invoke 时传入
+
+4.  变量没提供 → KeyError 报错
+    变量刚匹配 → 正常运行
+    变量多出来 → KeyError 报错
+    想允许缺省 → 用 partial 预设默认值
+"""

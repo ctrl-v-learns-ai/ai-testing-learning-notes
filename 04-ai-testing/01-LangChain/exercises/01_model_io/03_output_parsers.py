@@ -72,7 +72,32 @@ print(f"用例名称：{result.get('name', 'N/A')}")
 """
 思考题：
 1. StrOutputParser 的作用是什么？如果不加会怎样？
+
 2. JsonOutputParser 中 Field 的 description 参数有什么用？
+
 3. temperature 设为 0.3 和 0.7 对 JSON 输出有什么影响？
+
 4. json_parser.get_format_instructions() 返回的是什么？
+"""
+
+"""可以先思考再看答案建议"""
+
+"""
+答案建议：
+1.  StrOutputParser = 把 AIMessage 对象变成纯字符串
+    链的下一步需要字符串 → 加
+    直接给用户看结果 → 加
+    需要访问 token 用量等元数据 → 不加
+
+2.  Field 的 description 不是给人看的文档，是给模型看的指令。
+    写得越精确 → 模型输出越符合预期
+    不写或写得模糊 → 模型自由发挥，结果不可控
+
+3.  temperature 越低 → JSON 越稳定、越可预测
+    temperature 越高 → JSON 越不稳定、越容易出格式错误
+    JSON 输出场景，宁可低一点（0.1~0.3），不要冒高 temperature 的风险。
+
+4.  get_format_instructions() = 自动生成的"输出格式说明书"
+    模型看到它 → 知道该输出什么结构的 JSON
+    你不塞进 prompt → 模型不知道该输出什么格式 → 输出可能不符合预期
 """
