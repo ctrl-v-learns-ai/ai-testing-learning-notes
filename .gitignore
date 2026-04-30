@@ -22,4 +22,5 @@ build/
 
 # ===== 临时忽略 =====
 000_Pandas.md
+AGENTS.md
 .env
