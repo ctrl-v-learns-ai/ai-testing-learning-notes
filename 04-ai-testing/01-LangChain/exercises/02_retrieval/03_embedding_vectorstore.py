@@ -8,6 +8,7 @@
 
 import os
 from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
@@ -18,11 +19,9 @@ load_dotenv()
 print("=== Embedding 基础 ===")
 
 # 初始化 Embedding 模型
-# 注意：这里使用 OpenAI 兼容接口，你需要配置正确的 API
-embeddings = OpenAIEmbeddings(
-    model="text-embedding-ada-002",
-    openai_api_key=os.getenv("MIMO_API_KEY"),
-    openai_api_base=os.getenv("MIMO_API_URL")
+# 注意：这里如果使用 OpenAI 兼容接口，你需要配置正确的 API
+embeddings = HuggingFaceEmbeddings(
+    model_name="shibing624/text2vec-base-chinese"
 )
 
 # 将文本转换为向量
@@ -62,7 +61,7 @@ similarities = []
 for i, (text, vec) in enumerate(zip(texts, text_vectors)):
     sim = cosine_similarity(query_vector, vec)
     similarities.append((sim, text))
-    
+
 similarities.sort(reverse=True)
 for sim, text in similarities:
     print(f"  {sim:.4f} - {text}")
@@ -101,7 +100,34 @@ print("向量数据库已重新加载")
 """
 思考题：
 1. Embedding 模型输出的向量是什么？维度由什么决定？
+
 2. 为什么"回归测试"和"单元测试"的相似度比"回归测试"和"Python"高？
+
 3. FAISS 的 similarity_search 方法内部做了什么？
+
 4. save_local 和 load_local 的作用是什么？什么时候需要保存？
+"""
+
+"""可以先思考再看答案建议"""
+
+"""
+1.  向量 = 一组浮点数，代表文本的语义
+    维度 = 模型决定的，不能改
+    维度越高 → 精度越高，成本也越高
+    语义相近的文本 → 向量距离近
+
+2.  回归测试和单元测试 → 都是测试方法 → 语义相近 → 向量距离近
+    回归测试和 Python  → 不同领域    → 语义不同 → 向量距离远
+    
+3.  similarity_search 内部做了四件事：
+    1. 查询文本 → Embedding → 查询向量
+    2. 查询向量 和 库中所有向量 计算距离
+    3. 按距离排序，取最近的 k 个
+    4. 返回对应的 Document
+    本质就是：语义相似度搜索
+
+4.  save_local → 把向量库存到磁盘（算一次，用多次）
+    load_local → 从磁盘加载（省掉重新计算的时间和费用）
+    文档量大或用付费 API → 一定要保存
+    文档经常变 → 每次更新后重新保存
 """

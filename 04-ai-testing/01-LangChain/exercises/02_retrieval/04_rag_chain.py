@@ -8,6 +8,7 @@
 
 import os
 from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import CSVLoader
@@ -21,7 +22,7 @@ load_dotenv()
 # ===== 第一步：加载文档 =====
 print("=== 第一步：加载文档 ===")
 
-csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "01-LangChain", "OutdoorClothingCatalog_1000.csv")
+csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "OutdoorClothingCatalog_1000.csv")
 
 if not os.path.exists(csv_path):
     print(f"CSV 文件不存在：{csv_path}")
@@ -45,10 +46,8 @@ print(f"分割后得到 {len(chunks)} 个块")
 # ===== 第三步：创建向量数据库 =====
 print("\n=== 第三步：创建向量数据库 ===")
 
-embeddings = OpenAIEmbeddings(
-    model="text-embedding-ada-002",
-    openai_api_key=os.getenv("MIMO_API_KEY"),
-    openai_api_base=os.getenv("MIMO_API_URL")
+embeddings = HuggingFaceEmbeddings(
+    model_name="shibing624/text2vec-base-chinese"
 )
 
 vectorstore = FAISS.from_documents(chunks, embeddings)
@@ -106,7 +105,38 @@ print(answer)
 """
 思考题：
 1. retriever | format_docs 这个管道的作用是什么？
+
 2. RunnablePassthrough() 的作用是什么？
+
 3. 为什么 RAG 链的 temperature 设为 0.3 而不是 0.7？
+
 4. 如果要支持多轮对话，需要怎么修改 RAG 链？
+"""
+
+"""可以先思考再看答案建议"""
+
+"""
+1.  retriever | format_docs
+
+    retriever  → 从向量库检索相关文档（List[Document]）
+    format_docs → 把文档列表拼成字符串（str）
+    
+    两者用 | 管道连接 = 先检索，再格式化，一步到位
+
+2.  RunnablePassthrough = 透传器，输入什么就输出什么
+    用途：在管道中保持原始输入不变，同时传递给多个分支
+    RAG 场景：用户问题既要用来检索，又要作为提问 → 用 RunnablePassthrough 保持原样
+
+3.  RAG = 基于资料回答，不是自由发挥
+    temperature 低 → 忠实于资料，回答稳定
+    temperature 高 → 模型自由发挥，可能编造内容
+    RAG 场景推荐 temperature = 0.1 ~ 0.3
+
+4.  单轮 RAG → 多轮 RAG，三步改造：
+
+    1. 保存对话历史（List[Message]）
+    2. 重写当前问题（解决指代不明）
+    3. Prompt 中加入对话历史（让模型知道之前聊了什么）
+    
+    额外注意：历史太长要截断，防止 token 超限
 """
