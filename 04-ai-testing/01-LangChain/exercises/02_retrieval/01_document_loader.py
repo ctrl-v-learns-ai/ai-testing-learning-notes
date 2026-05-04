@@ -16,7 +16,7 @@ load_dotenv()
 print("=== 加载 CSV 文件 ===")
 
 # 项目中有一个现成的 CSV 文件
-csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "01-LangChain", "OutdoorClothingCatalog_1000.csv")
+csv_path = os.path.join(os.path.dirname(__file__), "..", "..", "OutdoorClothingCatalog_1000.csv")
 
 # 检查文件是否存在
 if os.path.exists(csv_path):
@@ -46,7 +46,26 @@ print(f"元数据：{doc.metadata}")
 """
 思考题：
 1. Document 对象的 page_content 和 metadata 分别存储什么？
+
 2. CSVLoader 的 load() 方法返回的是什么类型？
+
 3. 如果要加载 PDF 文件，应该用什么 Loader？
+
 4. metadata 中的 source 字段有什么用？
+"""
+
+"""可以先思考再看答案建议"""
+
+"""
+1.  - page_content: 文本内容（字符串）
+    - metadata: 元数据（字典，如来源文件名、页码等）
+    
+2.  CSVLoader.load() → List[Document]
+    CSV 的每一行 → 一个 Document 对象
+    Document.page_content → 该行的文本内容
+    Document.metadata → 来源文件、行号等信息
+
+3.  PyPDFLoader()
+
+4.  记录这条数据来自哪个文件，方便溯源
 """

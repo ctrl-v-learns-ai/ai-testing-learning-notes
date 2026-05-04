@@ -63,7 +63,25 @@ for size in [100, 300, 500]:
 """
 思考题：
 1. chunk_size 设为 100 和 500 分别会有什么效果？
+
 2. chunk_overlap 的作用是什么？设为 0 会有什么问题？
+
 3. separators 参数中的顺序有什么意义？
+
 4. split_text 和 split_documents 的区别是什么？
+
+"""
+
+"""可以先思考再看答案建议"""
+
+"""
+1.  chunk_size 决定每段文本的最大长度，值越小切得越碎，值越大保留越多上下文。
+
+2.  chunk_overlap = 0 → 切得干净，但边界处上下文断裂
+    chunk_overlap > 0 → 相邻 chunk 有重叠，上下文衔接更好
+    建议：chunk_overlap = chunk_size 的 10%~20%
+
+3.  按顺序依次尝试用每个分隔符切分，优先用大粒度的分隔符，切不动再换小粒度的。
+
+4.  split_text 接收字符串，split_documents 接收 Document 对象。
 """
