@@ -9,7 +9,7 @@
 - 记录学习过程，分享给同样想转行的测试同学
 
 ## 📂 项目列表
-- 待补充
+- CLI_ChatBot
 
 ## 🛠 技术栈
 
@@ -30,8 +30,8 @@
 
 ## 🔗 相关链接
 
-- 我的抖音：[链接]
-- 我的小红书：[链接]
-- 项目合集仓库：[ai-testing-projects]
+- 我的抖音：[链接] 
+- 我的小红书：[链接] https://www.xiaohongshu.com/user/profile/639eccff0000000026004f96
+- 项目合集仓库：[ai-testing-projects] https://github.com/ctrl-v-learns-ai/ai-testing-projects
 
 ## ⭐ 如果对你有帮助，欢迎Star
